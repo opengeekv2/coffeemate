@@ -1,0 +1,8 @@
+<h1>Beans</h1>
+
+<ul>
+<% @coffees.each do |coffee| %>
+<li>
+    <a href="<%= coffee.ecommerce_link %>" target="_blank"><%= coffee.title %></a>
+</li>
+<% end %>
