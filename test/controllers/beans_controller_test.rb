@@ -1,6 +1,8 @@
 require "test_helper"
+require "docker"
 
 class BeansControllerTest < ActionDispatch::IntegrationTest
+
   test "should show cofee beans page" do
     get beans_url
     assert_response :success

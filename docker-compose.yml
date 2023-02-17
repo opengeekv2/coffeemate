@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  coffee_database:
+    container_name: test_database
+    image: postgres:11
+    ports:
+      - '25432:5432'
+    environment:
+      POSTGRES_USER: coffeemate_user
+      POSTGRES_PASSWORD: coffeemate_password
+      POSTGRES_DB: coffeedb
