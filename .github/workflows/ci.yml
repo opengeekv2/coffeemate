@@ -19,14 +19,15 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
-    container:
-      image: postgres
-      env:
-        POSTGRES_USER: coffeemate_user
-        POSTGRES_PASSWORD: coffeemate_password
-        POSTGRES_DB: coffeedb
-      ports:
-        - 25432:5432
+    services:
+      database:
+        image: postgres
+        env:
+          POSTGRES_USER: coffeemate_user
+          POSTGRES_PASSWORD: coffeemate_password
+          POSTGRES_DB: coffeemate_tst
+        ports:
+          - 25432:5432
 
     steps:
       - uses: actions/checkout@v3
@@ -38,3 +39,8 @@ jobs:
         run: bundle install
       - name: Run tests
         run: bundle exec rake
+        env:
+          POSTGRES_USER: coffeemate_user
+          POSTGRES_PASSWORD: coffeemate_password
+          POSTGRES_DB: coffeemate_tst
+          RAILS_ENV: test
