@@ -19,6 +19,14 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+    container:
+      image: postgres
+      env:
+        POSTGRES_USER: coffeemate_user
+        POSTGRES_PASSWORD: coffeemate_password
+        POSTGRES_DB: coffeedb
+      ports:
+        - 25432:5432
 
     steps:
       - uses: actions/checkout@v3
