@@ -27,7 +27,7 @@ jobs:
           POSTGRES_PASSWORD: coffeemate_password
           POSTGRES_DB: coffeemate_tst
         ports:
-          - 25432:5432
+          - 5432
 
     steps:
       - uses: actions/checkout@v3
