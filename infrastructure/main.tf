@@ -1,4 +1,3 @@
-# Configure the Azure provider
 terraform {
   required_providers {
     azuread = {
@@ -22,43 +21,74 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "cofeemate"
+resource "azurerm_resource_group" "coffeemate" {
+  name     = "coffeemate"
   location = "francecentral"
 }
 
-resource "azurerm_postgresql_server" "coffeemate_postgres" {
-  name                = "coffeemate-postgres"
-  location            = azurerm_resource_group.cofeemate.location
-  resource_group_name = azurerm_resource_group.cofeemate.name
+variable "db_admin_login" {
+  type = string
+}
+variable "db_admin_password" {
+  type = string
+}
 
-  administrator_login          = "${var.db_admin_login}"
-  administrator_login_password = "${var.db_admin_password}"
+resource "azurerm_postgresql_flexible_server" "coffeemate_db" {
+  name                   = "coffeemate-db"
+  resource_group_name    = azurerm_resource_group.coffeemate.name
+  location               = azurerm_resource_group.coffeemate.location
+  version                = "14"
+  administrator_login    = "${var.db_admin_login}"
+  administrator_password = "${var.db_admin_password}"
+  storage_mb = 32768
+  zone = "2"
 
-  sku_name   = "GP_Gen5_4"
-  version    = "11"
-  storage_mb = 640000
+  sku_name   = "B_Standard_B1ms"
 
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = true
-  auto_grow_enabled            = true
+  timeouts {
+    create = "15m"
+  }
+  depends_on = [
+    azurerm_resource_group.coffeemate,
+  ]
+}
 
-  public_network_access_enabled    = false
-  ssl_enforcement_enabled          = true
-  ssl_minimal_tls_version_enforced = "TLS1_2"
+resource "azurerm_postgresql_flexible_server_firewall_rule" "coffeemate_db_firewall_rule" {
+  name                = "coffeemate-db-firewall-rule"
+  server_id           = azurerm_postgresql_flexible_server.coffeemate_db.id
+  start_ip_address    = "212.106.232.236"
+  end_ip_address      = "212.106.232.236"
+
+  depends_on = [
+    azurerm_postgresql_flexible_server.coffeemate_db
+  ]
+}
+
+resource "azurerm_postgresql_flexible_server_database" "coffeemate_db" {
+  name      = "coffeemate-db"
+  server_id = azurerm_postgresql_flexible_server.coffeemate_db.id
+  collation = "en_US.utf8"
+  charset   = "utf8"
+
+  depends_on = [
+    azurerm_postgresql_flexible_server.coffeemate_db
+  ]
 }
 
 resource "azurerm_service_plan" "coffeemate_app_plan" {
-  name                = "coffeemate_plan"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  name                = "coffeemate-plan"
+  resource_group_name = azurerm_resource_group.coffeemate.name
+  location            = azurerm_resource_group.coffeemate.location
   os_type             = "Linux"
   sku_name            = "F1"
+  depends_on = [
+    azurerm_resource_group.coffeemate
+  ]
 }
 
 resource "azurerm_linux_web_app" "coffeemate_app" {
   name                = "coffeemate-app"
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = azurerm_resource_group.coffeemate.name
   location            = azurerm_service_plan.coffeemate_app_plan.location
   service_plan_id     = azurerm_service_plan.coffeemate_app_plan.id
   https_only          = true
@@ -71,4 +101,8 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
     }
 
   }
+  depends_on = [
+    azurerm_resource_group.coffeemate,
+    azurerm_service_plan.coffeemate_app_plan
+  ]
 }
