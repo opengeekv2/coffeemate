@@ -43,4 +43,5 @@ jobs:
           POSTGRES_USER: coffeemate_user
           POSTGRES_PASSWORD: coffeemate_password
           POSTGRES_DB: coffeemate_tst
+          POSTGRES_HOST: localhost
           RAILS_ENV: test
