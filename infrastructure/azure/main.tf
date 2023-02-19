@@ -64,17 +64,6 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "coffeemate_db_firew
   ]
 }
 
-resource "azurerm_postgresql_flexible_server_database" "coffeemate_db" {
-  name      = "coffeemate-db"
-  server_id = azurerm_postgresql_flexible_server.coffeemate_db.id
-  collation = "en_US.utf8"
-  charset   = "utf8"
-
-  depends_on = [
-    azurerm_postgresql_flexible_server.coffeemate_db
-  ]
-}
-
 resource "azurerm_service_plan" "coffeemate_app_plan" {
   name                = "coffeemate-plan"
   resource_group_name = azurerm_resource_group.coffeemate.name
