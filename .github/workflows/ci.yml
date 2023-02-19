@@ -27,7 +27,7 @@ jobs:
           POSTGRES_PASSWORD: coffeemate_password
           POSTGRES_DB: coffeemate_tst
         ports:
-          - 5432
+          - 25432:5432
 
     steps:
       - uses: actions/checkout@v3
@@ -40,5 +40,5 @@ jobs:
       - name: Run tests
         run: bundle exec rake
         env:
-          DATABASE_URL: "postgres://coffeemate_user:coffeemate_password@localhost:5432"
+          DATABASE_URL: "postgres://coffeemate_user:coffeemate_password@localhost:25432"
           RAILS_ENV: test
