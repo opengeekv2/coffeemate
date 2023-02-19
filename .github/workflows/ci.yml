@@ -40,8 +40,5 @@ jobs:
       - name: Run tests
         run: bundle exec rake
         env:
-          POSTGRES_USER: coffeemate_user
-          POSTGRES_PASSWORD: coffeemate_password
-          POSTGRES_DB: coffeemate_tst
-          POSTGRES_HOST: localhost
+          DATABASE_URL: "postgres://coffeemate_user:coffeemate_password@localhost:25432"
           RAILS_ENV: test
