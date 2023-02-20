@@ -33,6 +33,13 @@ variable "db_admin_password" {
   type = string
 }
 
+variable "db_login" {
+  type = string
+}
+variable "db_password" {
+  type = string
+}
+
 resource "azurerm_postgresql_flexible_server" "coffeemate_db" {
   name                   = "coffeemate-db"
   resource_group_name    = azurerm_resource_group.coffeemate.name
@@ -90,14 +97,14 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
     }
 
   }
+
+  app_settings = {
+    RUBY_ENV = "production"
+    DATABASE_URL = "postgres://${var.db_login}:${var.db_password}@coffeemate-db.postgres.database.azure.com:5432"
+  }
+
   depends_on = [
     azurerm_resource_group.coffeemate,
     azurerm_service_plan.coffeemate_app_plan
   ]
-}
-
-resource "azurerm_app_service_source_control" "coffeemate_repo" {
-  app_id   = azurerm_linux_web_app.coffeemate_app.id
-  repo_url = "https://github.com/opengeekv2/coffeemate"
-  branch   = "main"
 }
