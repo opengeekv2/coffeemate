@@ -72,3 +72,5 @@ override.tf.json
 terraform.rc
 
 .certs
+
+.ruby_version
