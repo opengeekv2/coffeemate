@@ -91,11 +91,10 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
 
   site_config {
     always_on           = false
-
     application_stack {
-      ruby_version     = "2.7"
+      docker_image = "ruby"
+      docker_image_tag = "2.7.7"
     }
-
   }
 
   app_settings = {
