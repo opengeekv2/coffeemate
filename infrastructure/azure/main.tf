@@ -71,6 +71,14 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "coffeemate_db_firew
   ]
 }
 
+resource "azurerm_container_registry" "coffeemate_acr" {
+  name                = "coffeemate"
+  resource_group_name = azurerm_resource_group.coffeemate.name
+  location            = azurerm_resource_group.coffeemate.location
+  sku                 = "Basic"
+  admin_enabled       = false
+}
+
 resource "azurerm_service_plan" "coffeemate_app_plan" {
   name                = "coffeemate-plan"
   resource_group_name = azurerm_resource_group.coffeemate.name
