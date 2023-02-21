@@ -46,8 +46,7 @@ jobs:
         env:
           DATABASE_URL: "postgres://coffeemate_user:coffeemate_password@localhost:25432"
           RAILS_ENV: test
-      --
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v4
         with:
           context: .
