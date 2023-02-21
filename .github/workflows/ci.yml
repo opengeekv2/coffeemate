@@ -59,3 +59,8 @@ jobs:
           context: .
           push: true
           tags: coffeemate.azurecr.io/opengeekv2/coffeemate:${{ github.sha }}
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'coffeemate-app'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: 'coffeemate.azurecr.io/opengeekv2/coffeemate:${{ github.sha }}'
