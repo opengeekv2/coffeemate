@@ -76,7 +76,7 @@ resource "azurerm_container_registry" "coffeemate_acr" {
   resource_group_name = azurerm_resource_group.coffeemate.name
   location            = azurerm_resource_group.coffeemate.location
   sku                 = "Basic"
-  admin_enabled       = false
+  admin_enabled       = true
 }
 
 resource "azurerm_service_plan" "coffeemate_app_plan" {
