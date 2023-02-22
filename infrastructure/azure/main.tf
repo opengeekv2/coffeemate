@@ -109,6 +109,9 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
   }
 
   app_settings = {
+    DOCKER_REGISTRY_SERVER_PASSWORD = "vQiLzbxHsVpcPCbdAlhf6hemnBwSj+pS9KIjZ3B8tf+ACRBgUPok"
+    DOCKER_REGISTRY_SERVER_URL      = "https://coffeemate.azurecr.io"
+    DOCKER_REGISTRY_SERVER_USERNAME = "coffeemate"
     WEBSITES_PORT = 3000
     RUBY_ENV = "production"
     DATABASE_URL = "postgres://${var.db_login}:${var.db_password}@coffeemate-db.postgres.database.azure.com:5432"
