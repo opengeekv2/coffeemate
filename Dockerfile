@@ -1,8 +1,7 @@
 FROM ruby:2.7.7
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 WORKDIR /coffeemate
-COPY Gemfile /coffeemate/Gemfile
-COPY Gemfile.lock /coffeemate/Gemfile.lock
+COPY . .
 RUN bundle install
 
 EXPOSE 3000
