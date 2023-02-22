@@ -21,6 +21,9 @@ provider "azurerm" {
   features {}
 }
 
+data "azurerm_subscription" "current" {
+}
+
 resource "azurerm_resource_group" "coffeemate" {
   name     = "coffeemate"
   location = "francecentral"
@@ -97,12 +100,12 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
   service_plan_id     = azurerm_service_plan.coffeemate_app_plan.id
   https_only          = true
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   site_config {
     always_on           = false
-    application_stack {
-      docker_image = "ruby"
-      docker_image_tag = "2.7.7"
-    }
   }
 
   app_settings = {
@@ -114,4 +117,10 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
     azurerm_resource_group.coffeemate,
     azurerm_service_plan.coffeemate_app_plan
   ]
+}
+
+resource "azurerm_role_assignment" "coffeemate_app_acr_pull" {
+  scope              = data.azurerm_subscription.current.id
+  role_definition_name = "AcrPull"
+  principal_id       = azurerm_linux_web_app.coffeemate_app.identity.0.principal_id 
 }
