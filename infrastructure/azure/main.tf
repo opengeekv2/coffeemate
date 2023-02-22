@@ -106,10 +106,17 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
 
   site_config {
     always_on           = false
+    container_registry_use_managed_identity = true
+  }
+
+  logs {
+    application_logs {
+      file_system_level = "Information"
+    }
   }
 
   app_settings = {
-    DOCKER_REGISTRY_SERVER_PASSWORD = "vQiLzbxHsVpcPCbdAlhf6hemnBwSj+pS9KIjZ3B8tf+ACRBgUPok"
+    DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.coffeemate_acr.admin_password
     DOCKER_REGISTRY_SERVER_URL      = "https://coffeemate.azurecr.io"
     DOCKER_REGISTRY_SERVER_USERNAME = "coffeemate"
     WEBSITES_PORT = 3000
