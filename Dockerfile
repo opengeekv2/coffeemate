@@ -1,4 +1,6 @@
 FROM ruby:2.7.7
+ENV RUBY_ENV=production
+ARG DATABASE_URL
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 WORKDIR /coffeemate
 COPY . .
