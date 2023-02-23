@@ -57,6 +57,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          build-args: |
+            SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }}
           push: true
           tags: coffeemate.azurecr.io/opengeekv2/coffeemate:${{ github.sha }}
       - uses: azure/webapps-deploy@v2

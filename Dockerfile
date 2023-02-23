@@ -1,6 +1,7 @@
 FROM ruby:2.7.7
 ENV RAILS_ENV=production
 ARG DATABASE_URL
+ARG SECRET_KEY_BASE
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 WORKDIR /coffeemate
 COPY . .
