@@ -46,6 +46,8 @@ jobs:
         env:
           DATABASE_URL: "postgres://coffeemate_user:coffeemate_password@localhost:25432"
           RAILS_ENV: test
+      - name: Compile assets
+        run: rails assets:precompile
       -
         name: Login to ACR
         uses: docker/login-action@v2
