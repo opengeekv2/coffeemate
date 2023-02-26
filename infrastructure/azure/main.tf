@@ -43,6 +43,10 @@ variable "db_password" {
   type = string
 }
 
+variable "secret_key_base" {
+  type = string
+}
+
 resource "azurerm_postgresql_flexible_server" "coffeemate_db" {
   name                   = "coffeemate-db"
   resource_group_name    = azurerm_resource_group.coffeemate.name
@@ -113,6 +117,13 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
     application_logs {
       file_system_level = "Information"
     }
+    http_logs {
+
+      file_system {
+        retention_in_days = 7
+        retention_in_mb   = 35
+      }
+    }
   }
 
   app_settings = {
@@ -121,6 +132,7 @@ resource "azurerm_linux_web_app" "coffeemate_app" {
     DOCKER_REGISTRY_SERVER_USERNAME = "coffeemate"
     WEBSITES_PORT = 3000
     DATABASE_URL = "postgres://${var.db_login}:${var.db_password}@coffeemate-db.postgres.database.azure.com:5432"
+    SECRET_KEY_BASE                 = "${var.secret_key_base}"
   }
 
   depends_on = [
