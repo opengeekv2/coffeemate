@@ -1,4 +1,4 @@
-FROM ruby:2.7.7
+FROM ruby:3.2.1
 ENV RAILS_ENV=production
 ENV RAILS_LOG_TO_STDOUT=true
 ARG DATABASE_URL
