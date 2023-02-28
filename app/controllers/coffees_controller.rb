@@ -1,4 +1,4 @@
-class BeansController < ApplicationController
+class CoffeesController < ApplicationController
   def index
     @coffees = Coffee.all
   end

@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  root "beans#index"
+  root "coffees#index"
 
-  get "/beans", to: "beans#index"
+  get "/coffees", to: "coffees#index"
 
 end
