@@ -4,5 +4,10 @@
 <% @coffees.each do |coffee| %>
 <li>
     <a href="<%= coffee.ecommerce_link %>" target="_blank"><%= coffee.title %></a>
+    <ul class="taste-notes">
+    <% coffee.taste_notes.each do |taste_note| %>
+    <li><%= taste_note.name %></li>
+    <% end %>
+    </ul>
 </li>
 <% end %>

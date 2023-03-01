@@ -1,0 +1,9 @@
+class CreateTasteNotes < ActiveRecord::Migration[7.0]
+  def change
+    create_table :taste_notes do |t|
+      t.string :name
+
+      t.timestamps
+    end
+  end
+end

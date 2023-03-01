@@ -32,4 +32,10 @@ class CoffeesControllerTest < ActionDispatch::IntegrationTest
     get coffees_url
     assert_select "a[href=?]", "https://syra.coffee/products/estanzuela"
   end
+
+  test "should show coffee taste notes" do
+    get coffees_url
+    assert_select "li", "Raspberry"
+    assert_select "li", "Chocolate"
+  end
 end
