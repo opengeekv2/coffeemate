@@ -1,5 +1,9 @@
 class CoffeesController < ApplicationController
   def index
-    @coffees = Coffee.all
+    if params[:taste_notes].present?
+      @coffees = Coffee.all
+    else
+      @coffees = Coffee.all
+    end
   end
 end
