@@ -3,6 +3,10 @@ class Coffee < ApplicationRecord
 
     after_save :update_taste_vector
 
+    def generate_taste_vector(all_taste_notes, coffee_taste_notes)
+        return "(" + Array.new(all_taste_notes.length, "0").join(",") + ")"
+    end
+
     def update_taste_vector(taste_note = nil)
         all_taste_notes = TasteNote.order('id ASC')
         taste_notes_vector = "("
