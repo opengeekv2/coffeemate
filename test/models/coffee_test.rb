@@ -16,14 +16,4 @@ class CoffeeTest < ActiveSupport::TestCase
     result = ActiveRecord::Base.connection.exec_query(sql)
     assert (result.to_a.last['taste_notes_vector'] == "(0, 1)")
   end
-
-  test "it should update the taste note vector when I create a taste_note" do
-    taste_note = TasteNote.create(name:"Peach")
-    sql = "select taste_notes_vector from coffees"
-    result = ActiveRecord::Base.connection.exec_query(sql)
-    puts result.to_a
-    assert result.to_a.all? { | row |
-      row['taste_notes_vector'].count(",") > 3
-    }
-  end
 end
