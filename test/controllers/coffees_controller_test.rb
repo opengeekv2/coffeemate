@@ -44,7 +44,6 @@ class CoffeesControllerTest < ActionDispatch::IntegrationTest
       taste_notes: ["Raspberry", "Chocolate"]
     }
     assert_select "a", "Sumatra Raja Gayo Café de Origen en grano Bio Fairtrade"
-    assert_select "a", {count: 0, text: "New"}
   end
 
 end

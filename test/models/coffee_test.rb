@@ -16,4 +16,10 @@ class CoffeeTest < ActiveSupport::TestCase
     result = ActiveRecord::Base.connection.exec_query(sql)
     assert (result.to_a.last['taste_notes_vector'] == "(0, 1)")
   end
+
+  test "it should get cofees by taste note similarity" do
+    coffees = Coffee.query_by_taste_notes(["Raspberry"])
+    assert coffees[0].title == "Sumatra Raja Gayo Café de Origen en grano Bio Fairtrade"
+    assert coffees[1].title == "Estanzuela"
+  end
 end
