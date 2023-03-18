@@ -1,6 +1,11 @@
 <h1>Coffees</h1>
 
-<ul>
+<form method="GET" action="/">
+<% @taste_notes.each_with_index do |taste_note, index| %>
+<input id="taste_notes_<%= index %>" type="checkbox" name="taste_notes[]" value="<%= taste_note.name %>"><label for="taste_note_<%= index %>"><%= taste_note.name %></label>
+<% end %>
+<input type="submit">
+</form>
 <% @coffees.each do |coffee| %>
 <li>
     <a href="<%= coffee.ecommerce_link %>" target="_blank"><%= coffee.title %></a>
