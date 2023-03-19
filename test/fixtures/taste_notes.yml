@@ -2,6 +2,13 @@
 
 raspberry:
   name: Raspberry
+  is_basic: true
 
 chocolate:
   name: Chocolate
+  is_basic: true
+
+nutty:
+  name: Nutty
+  is_basic: false
+

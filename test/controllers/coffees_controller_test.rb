@@ -46,4 +46,9 @@ class CoffeesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a", "Sumatra Raja Gayo Café de Origen en grano Bio Fairtrade"
   end
 
+  test "should not show complex coffee taste notes" do
+    get coffees_url
+    assert_select "label", {count: 0, text: "Nutty"}
+  end
+
 end
