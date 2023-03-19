@@ -14,7 +14,7 @@ class CoffeeTest < ActiveSupport::TestCase
     coffee.taste_notes << taste_note
     sql = "select taste_notes_vector from coffees where id = " + coffee.id.to_s
     result = ActiveRecord::Base.connection.exec_query(sql)
-    assert (result.to_a.last['taste_notes_vector'] == "(0, 0, 1)")
+    assert (result.to_a.last['taste_notes_vector'] == "(1, 0, 1)")
   end
 
   test "it should get cofees by taste note similarity" do

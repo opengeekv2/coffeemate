@@ -99,8 +99,8 @@ CREATE TABLE public.taste_notes (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     color character varying,
-    taste_note_id bigint,
-    is_basic boolean
+    is_basic boolean,
+    parent_id bigint
 );
 
 
@@ -170,10 +170,10 @@ ALTER TABLE ONLY public.taste_notes
 
 
 --
--- Name: index_taste_notes_on_taste_note_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_taste_notes_on_parent_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_taste_notes_on_taste_note_id ON public.taste_notes USING btree (taste_note_id);
+CREATE INDEX index_taste_notes_on_parent_id ON public.taste_notes USING btree (parent_id);
 
 
 --
@@ -189,6 +189,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230303174009'),
 ('20230319092348'),
 ('20230319095730'),
-('20230319095740');
+('20230319095740'),
+('20230319165550'),
+('20230319173737');
 
 

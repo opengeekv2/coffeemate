@@ -35,8 +35,8 @@ class CoffeesControllerTest < ActionDispatch::IntegrationTest
 
   test "should show coffee taste notes" do
     get coffees_url
-    assert_select "li", "Raspberry"
-    assert_select "li", "Chocolate"
+    assert_select ".taste-note", "Chocolate"
+    assert_select ".taste-note", "Raspberry"
   end
 
   test "should suggest coffees based on notes" do
