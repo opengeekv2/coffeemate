@@ -97,7 +97,10 @@ CREATE TABLE public.taste_notes (
     id bigint NOT NULL,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    color character varying,
+    taste_note_id bigint,
+    is_basic boolean
 );
 
 
@@ -167,6 +170,13 @@ ALTER TABLE ONLY public.taste_notes
 
 
 --
+-- Name: index_taste_notes_on_taste_note_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_taste_notes_on_taste_note_id ON public.taste_notes USING btree (taste_note_id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -176,6 +186,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230216183450'),
 ('20230301225812'),
 ('20230301231434'),
-('20230303174009');
+('20230303174009'),
+('20230319092348'),
+('20230319095730'),
+('20230319095740');
 
 
