@@ -100,7 +100,8 @@ CREATE TABLE public.taste_notes (
     updated_at timestamp(6) without time zone NOT NULL,
     color character varying,
     is_basic boolean,
-    parent_id bigint
+    parent_id bigint,
+    level integer
 );
 
 
@@ -191,6 +192,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20230319095730'),
 ('20230319095740'),
 ('20230319165550'),
-('20230319173737');
+('20230319173737'),
+('20230319213306'),
+('20230319213329');
 
 

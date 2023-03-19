@@ -4,8 +4,17 @@ class Coffee < ApplicationRecord
     after_save :update_taste_vector
 
     def self.query_by_taste_notes(taste_notes)
-        all_taste_notes = TasteNote.order('id ASC')
-        self.find_by_sql(["select *, cube_distance(taste_notes_vector, ?) dist FROM coffees ORDER BY dist", Coffee.generate_taste_vector(all_taste_notes, taste_notes)])
+        all_taste_notes = TasteNote.where(level: [1, 2]).order('id ASC')
+        request_taste_notes = taste_notes.reduce(Set[]) { | acc, taste_note |
+            subfamily = TasteNote.find_by(name: taste_note).parent
+            acc << subfamily
+            family = subfamily.parent
+            if !family
+                next
+            end
+            acc << family
+        }
+        self.find_by_sql(["select *, cube_distance(taste_notes_vector, ?) dist FROM coffees ORDER BY dist", Coffee.generate_taste_vector(all_taste_notes, request_taste_notes)])
       end
 
     def self.generate_taste_vector(all_taste_notes, taste_notes)
@@ -19,10 +28,11 @@ class Coffee < ApplicationRecord
     end
 
     def all_taste_notes()
-        complete_test_notes = []
+        complete_test_notes = Set[]
         self.taste_notes.each { | taste_note |
-            complete_test_notes << taste_note
-            family = taste_note.parent
+            subfamily = taste_note.parent
+            complete_test_notes << subfamily
+            family = subfamily.parent
             if !family
                 next
             end
@@ -32,7 +42,7 @@ class Coffee < ApplicationRecord
     end
 
     def update_taste_vector(taste_note = nil)
-        all_taste_notes = TasteNote.order('id ASC')
+        all_taste_notes = TasteNote.where(level: [1, 2]).order('id ASC')
         taste_vector = Coffee.generate_taste_vector(all_taste_notes, self.all_taste_notes)
         sql = "UPDATE coffees SET taste_notes_vector = '" + taste_vector + "' WHERE id = " + self.id.to_s
         ActiveRecord::Base.connection.execute(sql)

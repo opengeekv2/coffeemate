@@ -1,15 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-chocolate:
-  name: Chocolate
-  is_basic: true
-
 fruity:
   name: Fruity
   is_basic: false
+  level: 1
+
+berry:
+  name: Berry
+  is_basic: false
+  parent: fruity
+  level: 2
+
+chocolate:
+  name: Chocolate
+  is_basic: true
+  level: 3
+  parent: berry
 
 raspberry:
   name: Raspberry
   is_basic: true
-  parent: fruity
+  parent: berry
+  level: 3
 
