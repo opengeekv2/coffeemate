@@ -39,16 +39,18 @@ class CoffeesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".taste-note", "Raspberry"
   end
 
-  test "should suggest coffees based on notes" do
+  test "should suggest coffees based on basic notes" do
     get coffees_url, params: {
       taste_notes: ["Raspberry", "Chocolate"]
     }
     assert_select "a", "Sumatra Raja Gayo Café de Origen en grano Bio Fairtrade"
   end
 
-  test "should not show complex coffee taste notes" do
+  test "should show coffee taste notes of all levels" do
     get coffees_url
-    assert_select "label", {count: 0, text: "Nutty"}
+    assert_select "label", "Fruity"
+    assert_select "label", "Berry"
+    assert_select "label", "Raspberry"
   end
 
 end

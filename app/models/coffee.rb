@@ -4,17 +4,20 @@ class Coffee < ApplicationRecord
     after_save :update_taste_vector
 
     def self.query_by_taste_notes(taste_notes)
-        all_taste_notes = TasteNote.where(level: [1, 2]).order('id ASC')
-        request_taste_notes = taste_notes.reduce(Set[]) { | acc, taste_note |
-            subfamily = TasteNote.find_by(name: taste_note).parent
-            acc << subfamily
-            family = subfamily.parent
+        complex_taste_notes = TasteNote.where(level: [1, 2]).order('id ASC')
+        request_taste_notes = taste_notes.reduce(Set[]) { | acc, taste_note_name |
+            taste_note = TasteNote.find_by(name: taste_note_name)
+            if not complex_taste_notes.include? taste_note
+                taste_note = taste_note.parent
+            end
+            acc << taste_note
+            family = taste_note.parent
             if !family
                 next
             end
             acc << family
         }
-        self.find_by_sql(["select *, cube_distance(taste_notes_vector, ?) dist FROM coffees ORDER BY dist", Coffee.generate_taste_vector(all_taste_notes, request_taste_notes)])
+        self.find_by_sql(["select *, cube_distance(taste_notes_vector, ?) dist FROM coffees ORDER BY dist", Coffee.generate_taste_vector(complex_taste_notes, request_taste_notes)])
       end
 
     def self.generate_taste_vector(all_taste_notes, taste_notes)
@@ -24,27 +27,24 @@ class Coffee < ApplicationRecord
             }
             "0"
         }
-        return "(" + taste_notes_vector.join(",") + ")"
+        return "'(" + taste_notes_vector.join(",") + ")'"
     end
 
     def all_taste_notes()
         complete_test_notes = Set[]
         self.taste_notes.each { | taste_note |
-            subfamily = taste_note.parent
-            complete_test_notes << subfamily
-            family = subfamily.parent
-            if !family
-                next
+            if taste_note.level < 3
+                complete_test_notes << taste_note
             end
-            complete_test_notes << family
         }
         return complete_test_notes
     end
 
     def update_taste_vector(taste_note = nil)
-        all_taste_notes = TasteNote.where(level: [1, 2]).order('id ASC')
-        taste_vector = Coffee.generate_taste_vector(all_taste_notes, self.all_taste_notes)
-        sql = "UPDATE coffees SET taste_notes_vector = '" + taste_vector + "' WHERE id = " + self.id.to_s
-        ActiveRecord::Base.connection.execute(sql)
+        if self.id
+            all_taste_notes = TasteNote.where(level: [1, 2]).order('id ASC')
+            taste_vector = Coffee.generate_taste_vector(all_taste_notes, self.all_taste_notes)
+            ActiveRecord::Base.connection.exec_query("UPDATE coffees SET taste_notes_vector = " + taste_vector + " WHERE id = " + self.id.to_s)
+        end
     end
 end
