@@ -5,7 +5,7 @@ class Coffee < ApplicationRecord
 
     def self.query_by_taste_notes(taste_notes)
         complex_taste_notes = TasteNote.where(level: [1, 2]).order('id ASC')
-        request_taste_notes = taste_notes.map(Set[]) { | taste_note_name |
+        request_taste_notes = taste_notes.map { | taste_note_name |
             next TasteNote.find_by(name: taste_note_name)
         }
         self.find_by_sql(["select *, cube_distance(taste_notes_vector, ?) dist FROM coffees ORDER BY dist", Coffee.generate_taste_vector(complex_taste_notes, request_taste_notes)])
