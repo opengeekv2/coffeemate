@@ -1,5 +1,10 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+one:
+  title: Estanzuela 1
+  ecommerce_link: https://alternativa3.com/cafe-en-grano/cafe-grano-origen-sumatra-raja-gayo-bio-ft-500g/
+  taste_notes: chocolate, raspberry
+
 two:
   title: Estanzuela
   ecommerce_link: https://syra.coffee/products/estanzuela

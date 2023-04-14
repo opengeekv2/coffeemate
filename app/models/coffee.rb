@@ -23,28 +23,18 @@ class Coffee < ApplicationRecord
     def self.generate_taste_vector(all_taste_notes, taste_notes)
         taste_notes_vector = all_taste_notes.map { |taste_note|
             next "1" if taste_notes.any? { |coffee_taste_note|
-                coffee_taste_note == taste_note
+                coffee_taste_note.is_like?(taste_note)
             }
             "0"
         }
-        return "'(" + taste_notes_vector.join(",") + ")'"
-    end
-
-    def all_taste_notes()
-        complete_test_notes = Set[]
-        self.taste_notes.each { | taste_note |
-            if taste_note.level < 3
-                complete_test_notes << taste_note
-            end
-        }
-        return complete_test_notes
+        return "(" + taste_notes_vector.join(",") + ")"
     end
 
     def update_taste_vector(taste_note = nil)
         if self.id
             all_taste_notes = TasteNote.where(level: [1, 2]).order('id ASC')
-            taste_vector = Coffee.generate_taste_vector(all_taste_notes, self.all_taste_notes)
-            ActiveRecord::Base.connection.exec_query("UPDATE coffees SET taste_notes_vector = " + taste_vector + " WHERE id = " + self.id.to_s)
+            taste_vector = Coffee.generate_taste_vector(all_taste_notes, self.taste_notes)
+            ActiveRecord::Base.connection.exec_query("UPDATE coffees SET taste_notes_vector = '" + taste_vector + "' WHERE id = " + self.id.to_s)
         end
     end
 end

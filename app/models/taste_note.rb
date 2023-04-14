@@ -10,4 +10,16 @@ class TasteNote < ApplicationRecord
         }
     end
 
+    def is_like?(taste_note)
+        if self == taste_note
+            return true
+        else
+            if self.parent
+                return self.parent.is_like?(taste_note)
+            else
+                return false
+            end
+        end
+    end
+
 end

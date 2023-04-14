@@ -15,7 +15,7 @@ class CoffeesControllerTest < ActionDispatch::IntegrationTest
 
   test "should show a coffee in a list" do
     get coffees_url
-    assert_select "a", "Sumatra Raja Gayo Café de Origen en grano Bio Fairtrade"
+    assert_select "a", "Estanzuela 1"
   end
 
   test "should show a coffee in a list with a link" do
@@ -43,7 +43,7 @@ class CoffeesControllerTest < ActionDispatch::IntegrationTest
     get coffees_url, params: {
       taste_notes: ["Raspberry", "Chocolate"]
     }
-    assert_select "a", "Sumatra Raja Gayo Café de Origen en grano Bio Fairtrade"
+    assert_select "a", "Estanzuela 1"
   end
 
   test "should show coffee taste notes of all levels" do
